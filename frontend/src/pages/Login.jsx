@@ -22,6 +22,25 @@ function Login({ onLogin }) {
       setError("Invalid email or password");
     }
   };
+  const handleRegister = async () => {
+    try {
+      await API.post("/auth/register", {
+        email,
+        password,
+      });
+
+      // After successful registration, log in automatically
+      const response = await API.post("/auth/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem("token", response.data.token);
+      onLogin();
+    } catch (err) {
+      setError("Registration failed");
+    }
+  };
 
   return (
     <div style={{ padding: "40px", maxWidth: "400px", margin: "auto" }}>
@@ -45,6 +64,20 @@ function Login({ onLogin }) {
 
       <button onClick={handleLogin} style={{ width: "100%" }}>
         Login
+      </button>
+      <button
+        onClick={handleRegister}
+        style={{
+          width: "100%",
+          marginTop: "10px",
+          backgroundColor: "#22c55e",
+          color: "white",
+          border: "none",
+          padding: "6px",
+          cursor: "pointer",
+        }}
+      >
+        Register
       </button>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
