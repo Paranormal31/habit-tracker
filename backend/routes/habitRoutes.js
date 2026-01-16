@@ -5,9 +5,7 @@ const router = express.Router();
 
 // GET all habits
 router.get("/", auth, async (req, res) => {
-  const habits = await Habit.find()
-    .sort({ createdAt: -1 })
-    .sort({ createdAt: -1 });
+  const habits = await Habit.find({ user: req.userId });
   res.json(habits);
 });
 
@@ -28,9 +26,11 @@ router.patch("/:id", auth, async (req, res) => {
     _id: req.params.id,
     user: req.userId,
   });
+
   if (!habit) {
     return res.status(404).json({ message: "Habit not found" });
   }
+
   habit.records.set(date, status);
   await habit.save();
 
