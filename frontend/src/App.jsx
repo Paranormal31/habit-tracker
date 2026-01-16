@@ -9,6 +9,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
+
   const [habits, setHabits] = useState([]);
   const [newHabit, setNewHabit] = useState("");
   const today = new Date();

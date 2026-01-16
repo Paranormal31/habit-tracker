@@ -13,17 +13,18 @@ function Login({ onLogin }) {
         password,
       });
 
-      // ✅ STORE TOKEN
+      // ✅ Store token
       localStorage.setItem("token", response.data.token);
 
-      onLogin(); // notify App.jsx
+      // ✅ Tell App.jsx we are logged in
+      onLogin();
     } catch (err) {
       setError("Invalid email or password");
     }
   };
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div style={{ padding: "40px", maxWidth: "400px", margin: "auto" }}>
       <h2>Login</h2>
 
       <input
@@ -31,22 +32,20 @@ function Login({ onLogin }) {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        style={{ width: "100%", marginBottom: "10px" }}
       />
-
-      <br />
-      <br />
 
       <input
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        style={{ width: "100%", marginBottom: "10px" }}
       />
 
-      <br />
-      <br />
-
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleLogin} style={{ width: "100%" }}>
+        Login
+      </button>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
