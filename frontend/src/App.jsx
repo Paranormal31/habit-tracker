@@ -1,3 +1,4 @@
+import Login from "./pages/Login";
 import { useEffect, useState } from "react";
 import API from "./services/api";
 
@@ -5,9 +6,11 @@ function App() {
   // --------------------
   // STATE
   // --------------------
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
   const [habits, setHabits] = useState([]);
   const [newHabit, setNewHabit] = useState("");
-
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth()); // 0–11
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -136,6 +139,9 @@ function App() {
   // --------------------
   // UI
   // --------------------
+  if (!isAuthenticated) {
+    return <Login onLogin={() => setIsAuthenticated(true)} />;
+  }
   return (
     <div style={{ padding: "20px" }}>
       <h1>Habit Tracker</h1>
