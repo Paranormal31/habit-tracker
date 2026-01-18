@@ -3,13 +3,19 @@ import { useEffect, useState } from "react";
 import API from "./services/api";
 
 function App() {
+  //---------------------
+  //LOGOUT
+  //---------------------
+  const logout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
   // --------------------
   // STATE
   // --------------------
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
-
   const [habits, setHabits] = useState([]);
   const [newHabit, setNewHabit] = useState("");
   const today = new Date();
@@ -54,15 +60,13 @@ function App() {
   // TOGGLE DAY
   // --------------------
   const toggleDay = async (habitId, dateKey, currentStatus) => {
-    const newStatus = !currentStatus;
-
     const response = await API.patch(`/habits/${habitId}`, {
       date: dateKey,
-      status: newStatus,
+      status: !currentStatus,
     });
 
-    setHabits(
-      habits.map((habit) => (habit._id === habitId ? response.data : habit))
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) => (habit._id === habitId ? response.data : habit))
     );
   };
 
@@ -146,6 +150,19 @@ function App() {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Habit Tracker</h1>
+      <button
+        onClick={logout}
+        style={{
+          marginBottom: "20px",
+          backgroundColor: "#ef4444",
+          color: "white",
+          border: "none",
+          padding: "6px 12px",
+          cursor: "pointer",
+        }}
+      >
+        Logout
+      </button>
 
       {/* Add Habit */}
       <div style={{ marginBottom: "20px" }}>
